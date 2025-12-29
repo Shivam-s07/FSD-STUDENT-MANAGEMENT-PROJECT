@@ -1,79 +1,80 @@
-var alloc = require('buffer-alloc')
 var tape = require('tape')
-var bitfield = require('./')
+var pager = require('./')
 
-tape('set and get', function (t) {
-  var bits = bitfield()
+tape('get page', function (t) {
+  var pages = pager(1024)
 
-  t.same(bits.get(0), false, 'first bit is false')
-  bits.set(0, true)
-  t.same(bits.get(0), true, 'first bit is true')
-  t.same(bits.get(1), false, 'second bit is false')
-  bits.set(0, false)
-  t.same(bits.get(0), false, 'first bit is reset')
+  var page = pages.get(0)
+
+  t.same(page.offset, 0)
+  t.same(page.buffer, Buffer.alloc(1024))
   t.end()
 })
 
-tape('set large and get', function (t) {
-  var bits = bitfield()
+tape('get page twice', function (t) {
+  var pages = pager(1024)
+  t.same(pages.length, 0)
 
-  t.same(bits.get(9999999999999), false, 'large bit is false')
-  bits.set(9999999999999, true)
-  t.same(bits.get(9999999999999), true, 'large bit is true')
-  t.same(bits.get(9999999999999 + 1), false, 'large bit + 1 is false')
-  bits.set(9999999999999, false)
-  t.same(bits.get(9999999999999), false, 'large bit is reset')
+  var page = pages.get(0)
+
+  t.same(page.offset, 0)
+  t.same(page.buffer, Buffer.alloc(1024))
+  t.same(pages.length, 1)
+
+  var other = pages.get(0)
+
+  t.same(other, page)
   t.end()
 })
 
-tape('get and set buffer', function (t) {
-  var bits = bitfield({trackUpdates: true})
+tape('get no mutable page', function (t) {
+  var pages = pager(1024)
 
-  t.same(bits.pages.get(0, true), undefined)
-  t.same(bits.pages.get(Math.floor(9999999999999 / 8 / 1024), true), undefined)
-  bits.set(9999999999999, true)
+  t.ok(!pages.get(141, true))
+  t.ok(pages.get(141))
+  t.ok(pages.get(141, true))
 
-  var bits2 = bitfield()
-  var upd = bits.pages.lastUpdate()
-  bits2.pages.set(Math.floor(upd.offset / 1024), upd.buffer)
-  t.same(bits2.get(9999999999999), true, 'bit is set')
   t.end()
 })
 
-tape('toBuffer', function (t) {
-  var bits = bitfield()
+tape('get far out page', function (t) {
+  var pages = pager(1024)
 
-  t.same(bits.toBuffer(), alloc(0))
+  var page = pages.get(1000000)
 
-  bits.set(0, true)
+  t.same(page.offset, 1000000 * 1024)
+  t.same(page.buffer, Buffer.alloc(1024))
+  t.same(pages.length, 1000000 + 1)
 
-  t.same(bits.toBuffer(), bits.pages.get(0).buffer)
+  var other = pages.get(1)
 
-  bits.set(9000, true)
+  t.same(other.offset, 1024)
+  t.same(other.buffer, Buffer.alloc(1024))
+  t.same(pages.length, 1000000 + 1)
+  t.ok(other !== page)
 
-  t.same(bits.toBuffer(), Buffer.concat([bits.pages.get(0).buffer, bits.pages.get(1).buffer]))
   t.end()
 })
 
-tape('pass in buffer', function (t) {
-  var bits = bitfield()
+tape('updates', function (t) {
+  var pages = pager(1024)
 
-  bits.set(0, true)
-  bits.set(9000, true)
+  t.same(pages.lastUpdate(), null)
 
-  var clone = bitfield(bits.toBuffer())
+  var page = pages.get(10)
 
-  t.same(clone.get(0), true)
-  t.same(clone.get(9000), true)
-  t.end()
-})
+  page.buffer[42] = 1
+  pages.updated(page)
 
-tape('set small buffer', function (t) {
-  var buf = alloc(1)
-  buf[0] = 255
-  var bits = bitfield(buf)
+  t.same(pages.lastUpdate(), page)
+  t.same(pages.lastUpdate(), null)
 
-  t.same(bits.get(0), true)
-  t.same(bits.pages.get(0).buffer.length, bits.pageSize)
+  page.buffer[42] = 2
+  pages.updated(page)
+  pages.updated(page)
+
+  t.same(pages.lastUpdate(), page)
+  t.same(pages.lastUpdate(), null)
+
   t.end()
 })

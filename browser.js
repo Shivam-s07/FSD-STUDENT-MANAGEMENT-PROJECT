@@ -1,5 +1,8 @@
+/**
+ * Export lib/mongoose
+ *
+ */
+
 'use strict';
-module.exports = {
-	stdout: false,
-	stderr: false
-};
+
+module.exports = require('./lib/browser');
