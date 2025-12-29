@@ -1,61 +1,34 @@
-# object-assign [![Build Status](https://travis-ci.org/sindresorhus/object-assign.svg?branch=master)](https://travis-ci.org/sindresorhus/object-assign)
+# is-binary-path [![Build Status](https://travis-ci.org/sindresorhus/is-binary-path.svg?branch=master)](https://travis-ci.org/sindresorhus/is-binary-path)
 
-> ES2015 [`Object.assign()`](http://www.2ality.com/2014/01/object-assign.html) [ponyfill](https://ponyfill.com)
-
-
-## Use the built-in
-
-Node.js 4 and up, as well as every evergreen browser (Chrome, Edge, Firefox, Opera, Safari),
-support `Object.assign()` :tada:. If you target only those environments, then by all
-means, use `Object.assign()` instead of this package.
+> Check if a file path is a binary file
 
 
 ## Install
 
 ```
-$ npm install --save object-assign
+$ npm install is-binary-path
 ```
 
 
 ## Usage
 
 ```js
-const objectAssign = require('object-assign');
+const isBinaryPath = require('is-binary-path');
 
-objectAssign({foo: 0}, {bar: 1});
-//=> {foo: 0, bar: 1}
+isBinaryPath('source/unicorn.png');
+//=> true
 
-// multiple sources
-objectAssign({foo: 0}, {bar: 1}, {baz: 2});
-//=> {foo: 0, bar: 1, baz: 2}
-
-// overwrites equal keys
-objectAssign({foo: 0}, {foo: 1}, {foo: 2});
-//=> {foo: 2}
-
-// ignores null and undefined sources
-objectAssign({foo: 0}, null, {bar: 1}, undefined);
-//=> {foo: 0, bar: 1}
+isBinaryPath('source/unicorn.txt');
+//=> false
 ```
-
-
-## API
-
-### objectAssign(target, [source, ...])
-
-Assigns enumerable own properties of `source` objects to the `target` object and returns the `target` object. Additional `source` objects will overwrite previous ones.
-
-
-## Resources
-
-- [ES2015 spec - Object.assign](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign)
 
 
 ## Related
 
-- [deep-assign](https://github.com/sindresorhus/deep-assign) - Recursive `Object.assign()`
+- [binary-extensions](https://github.com/sindresorhus/binary-extensions) - List of binary file extensions
+- [is-text-path](https://github.com/sindresorhus/is-text-path) - Check if a filepath is a text file
 
 
 ## License
 
-MIT © [Sindre Sorhus](https://sindresorhus.com)
+MIT © [Sindre Sorhus](https://sindresorhus.com), [Paul Miller](https://paulmillr.com)
