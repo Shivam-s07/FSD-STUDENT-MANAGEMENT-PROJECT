@@ -1,161 +1,108 @@
-2.0.7 / 2021-05-31
+0.6.3 / 2022-01-22
 ==================
 
-  * deps: forwarded@0.2.0
-    - Use `req.socket` over deprecated `req.connection`
+  * Revert "Lazy-load modules from main entry point"
 
-2.0.6 / 2020-02-24
+0.6.2 / 2019-04-29
 ==================
 
-  * deps: ipaddr.js@1.9.1
+  * Fix sorting charset, encoding, and language with extra parameters
 
-2.0.5 / 2019-04-16
+0.6.1 / 2016-05-02
 ==================
 
-  * deps: ipaddr.js@1.9.0
+  * perf: improve `Accept` parsing speed
+  * perf: improve `Accept-Charset` parsing speed
+  * perf: improve `Accept-Encoding` parsing speed
+  * perf: improve `Accept-Language` parsing speed
 
-2.0.4 / 2018-07-26
+0.6.0 / 2015-09-29
 ==================
 
-  * deps: ipaddr.js@1.8.0
-
-2.0.3 / 2018-02-19
-==================
-
-  * deps: ipaddr.js@1.6.0
-
-2.0.2 / 2017-09-24
-==================
-
-  * deps: forwarded@~0.1.2
-    - perf: improve header parsing
-    - perf: reduce overhead when no `X-Forwarded-For` header
-
-2.0.1 / 2017-09-10
-==================
-
-  * deps: forwarded@~0.1.1
-    - Fix trimming leading / trailing OWS
-    - perf: hoist regular expression
-  * deps: ipaddr.js@1.5.2
-
-2.0.0 / 2017-08-08
-==================
-
-  * Drop support for Node.js below 0.10
-
-1.1.5 / 2017-07-25
-==================
-
-  * Fix array argument being altered
-  * deps: ipaddr.js@1.4.0
-
-1.1.4 / 2017-03-24
-==================
-
-  * deps: ipaddr.js@1.3.0
-
-1.1.3 / 2017-01-14
-==================
-
-  * deps: ipaddr.js@1.2.0
-
-1.1.2 / 2016-05-29
-==================
-
-  * deps: ipaddr.js@1.1.1
-    - Fix IPv6-mapped IPv4 validation edge cases
-
-1.1.1 / 2016-05-03
-==================
-
-  * Fix regression matching mixed versions against multiple subnets
-
-1.1.0 / 2016-05-01
-==================
-
-  * Fix accepting various invalid netmasks
-    - IPv4 netmasks must be contingous
-    - IPv6 addresses cannot be used as a netmask
-  * deps: ipaddr.js@1.1.0
-
-1.0.10 / 2015-12-09
-===================
-
-  * deps: ipaddr.js@1.0.5
-    - Fix regression in `isValid` with non-string arguments
-
-1.0.9 / 2015-12-01
-==================
-
-  * deps: ipaddr.js@1.0.4
-    - Fix accepting some invalid IPv6 addresses
-    - Reject CIDRs with negative or overlong masks
+  * Fix including type extensions in parameters in `Accept` parsing
+  * Fix parsing `Accept` parameters with quoted equals
+  * Fix parsing `Accept` parameters with quoted semicolons
+  * Lazy-load modules from main entry point
+  * perf: delay type concatenation until needed
   * perf: enable strict mode
+  * perf: hoist regular expressions
+  * perf: remove closures getting spec properties
+  * perf: remove a closure from media type parsing
+  * perf: remove property delete from media type parsing
 
-1.0.8 / 2015-05-10
+0.5.3 / 2015-05-10
 ==================
 
-  * deps: ipaddr.js@1.0.1
+  * Fix media type parameter matching to be case-insensitive
 
-1.0.7 / 2015-03-16
+0.5.2 / 2015-05-06
 ==================
 
-  * deps: ipaddr.js@0.1.9
-    - Fix OOM on certain inputs to `isValid`
+  * Fix comparing media types with quoted values
+  * Fix splitting media types with quoted commas
 
-1.0.6 / 2015-02-01
+0.5.1 / 2015-02-14
 ==================
 
-  * deps: ipaddr.js@0.1.8
+  * Fix preference sorting to be stable for long acceptable lists
 
-1.0.5 / 2015-01-08
+0.5.0 / 2014-12-18
 ==================
 
-  * deps: ipaddr.js@0.1.6
+  * Fix list return order when large accepted list
+  * Fix missing identity encoding when q=0 exists
+  * Remove dynamic building of Negotiator class
 
-1.0.4 / 2014-11-23
+0.4.9 / 2014-10-14
 ==================
 
-  * deps: ipaddr.js@0.1.5
-    - Fix edge cases with `isValid`
+  * Fix error when media type has invalid parameter
 
-1.0.3 / 2014-09-21
+0.4.8 / 2014-09-28
 ==================
 
-  * Use `forwarded` npm module
-
-1.0.2 / 2014-09-18
-==================
-
-  * Fix a global leak when multiple subnets are trusted
+  * Fix all negotiations to be case-insensitive
+  * Stable sort preferences of same quality according to client order
   * Support Node.js 0.6
-  * deps: ipaddr.js@0.1.3
 
-1.0.1 / 2014-06-03
+0.4.7 / 2014-06-24
 ==================
 
-  * Fix links in npm package
+  * Handle invalid provided languages
+  * Handle invalid provided media types
 
-1.0.0 / 2014-05-08
+0.4.6 / 2014-06-11
 ==================
 
-  * Add `trust` argument to determine proxy trust on
-    * Accepts custom function
-    * Accepts IPv4/IPv6 address(es)
-    * Accepts subnets
-    * Accepts pre-defined names
-  * Add optional `trust` argument to `proxyaddr.all` to
-    stop at first untrusted
-  * Add `proxyaddr.compile` to pre-compile `trust` function
-    to make subsequent calls faster
+  *  Order by specificity when quality is the same
 
-0.0.1 / 2014-05-04
+0.4.5 / 2014-05-29
 ==================
 
-  * Fix bad npm publish
+  * Fix regression in empty header handling
 
-0.0.0 / 2014-05-04
+0.4.4 / 2014-05-29
 ==================
 
-  * Initial release
+  * Fix behaviors when headers are not present
+
+0.4.3 / 2014-04-16
+==================
+
+  * Handle slashes on media params correctly
+
+0.4.2 / 2014-02-28
+==================
+
+  * Fix media type sorting
+  * Handle media types params strictly
+
+0.4.1 / 2014-01-16
+==================
+
+  * Use most specific matches
+
+0.4.0 / 2014-01-09
+==================
+
+  * Remove preferred prefix from methods
